@@ -1,3 +1,6 @@
 node_modules/
 dist
 /.tern-port
+/npm-debug.log
+/hacks.js~
+*~
