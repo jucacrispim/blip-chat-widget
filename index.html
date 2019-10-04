@@ -192,6 +192,10 @@
             .blip-card-container, .blip-card .bubble {
               font-size: 12px;
             }
+
+            .blip-card .bubble {
+                height: inherit;
+            }
             #message-input {
               box-sizing: border-box;
               border: 1px solid #0CC8CC;
@@ -245,6 +249,7 @@
                 ''
               )
             builder.build()
+
           }
 
           changeSDK = function() {

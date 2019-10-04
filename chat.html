@@ -1,0 +1,246 @@
+<html>
+  <body>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel=stylesheet>
+    <link href="//unpkg.com/blip-cards@1.55.10/dist/blip-cards.css" rel=stylesheet>
+    <link href="https://chat.blip.ai/static/css/app.css?v=e0a50a5a65e4aca263f753b6a2282332" rel=stylesheet>
+    <style>
+      html, body {
+	  font-family: 'Nunito', sans-serif;
+      }
+      html {
+	  font-family: sans-serif;
+	  -webkit-text-size-adjust: 100%;
+      }
+      #message-input {
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: horizontal;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: row;
+	  flex-direction: row;
+	  position: relative;
+	  bottom: 0;
+	  left: 0;
+	  -webkit-box-align: center;
+	  -ms-flex-align: center;
+	  align-items: center;
+	  -webkit-box-pack: justify;
+	  -ms-flex-pack: justify;
+	  justify-content: space-between;
+	  height: 57px;
+	  min-height: 57px;
+	  width: 100%;
+	  background-color: #FFF;
+	  -webkit-box-shadow: 0 -1px 12px 0 rgba(0, 0, 0, 0.2);
+	  box-shadow: 0 -1px 12px 0 rgba(0, 0, 0, 0.2);
+	  border-radius: 0 0 3px 3px;
+	  z-index: 2;
+      }
+
+      #message-input textarea {
+	  width: calc(100% - 120px);
+	  position: relative;
+	  outline: none;
+	  resize: none;
+	  padding: 0px 10px 0px 2px;
+	  max-height: 57px;
+	  font-size: 14px;
+	  font-weight: 500;
+	  line-height: 19px;
+	  border: none;
+      }
+
+      #message-input .send-button {
+	  display: block;
+	  width: 40px;
+	  height: 40px;
+	  position: relative;
+	  background-color: #0CC8CC;
+	  border-radius: 50%;
+	  -webkit-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.1);
+	  box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.1);
+	  cursor: pointer;
+	  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      #message-input .send-button img {
+	  position: absolute;
+	  width: 52%;
+	  left: 11px;
+	  top: 9px;
+	  color: #fff;
+      }
+      img {
+	  max-width: 100%;
+      }
+      img {
+	  border: 0;
+      }
+
+      #message-input .send-button {
+	  cursor: pointer;
+      }
+
+      #message-input .message-options {
+	  width: 95px;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: horizontal;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: row;
+	  flex-direction: row;
+	  -webkit-box-align: center;
+	  -ms-flex-align: center;
+	  align-items: center;
+	  position: absolute;
+	  -webkit-box-pack: end;
+	  -ms-flex-pack: end;
+	  justify-content: flex-end;
+	  right: 5px;
+	  top: 0;
+	  height: 100%;
+	  overflow: hidden;
+      }
+      .ml3 {
+	  margin-left: 1rem;
+      }
+      textarea {
+	  overflow: auto;
+      }
+    </style>
+    <div id="msgs" style="display:none"></div>
+    <div class="container">
+      <div id="chat-container" style="height: 80%">
+      </div>
+
+      <!-- input -->
+      <div id="message-input" style="height: 57px;">
+	<div class="w-100" style="width:100%">
+	  <textarea id="msg-textarea" rows="1"
+		    data-min-rows="1" placeholder="Digite sua mensagem aqui"
+		    class="ml3"></textarea>
+
+	  <span class="message-options"><span id="blip-send-message" class="send-button mr1" style="background-color: rgb(44, 195, 213);"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMzRweCIgaGVpZ2h0PSIzNXB4IiB2aWV3Qm94PSIwIDAgMzQgMzUiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ4ICg0NzIzNSkgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+U2VuZDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJTcGxhc2gtU2NyZWVucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IlNlbmQiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8cGF0aCBkPSJNNy4zOTkwOTg5NSw0LjE3MjUxMDA1IEwyOS43NzgzNDkyLDE1LjA3MzgxOTggQzMxLjQwNzIxNjksMTUuODY3ODI2NiAzMS40MDcyMTY5LDE4LjEzMjQ5NTUgMjkuNzc4MzQ5MiwxOC45MjU5NjQgTDcuMzk5MDk4OTUsMjkuODI3MjczNyBDNi4yOTY3OTUzMSwzMC4zNjQ1MDY4IDUsMjkuNTgzNDE5NCA1LDI4LjM4Mjk4ODggTDUuOTUzNjcyMjIsMjAuNDIwODUgQzYuMDQyNjMwMDYsMTkuNjc3OTgyNiA2LjY0Mzc4NjEzLDE5LjA5MTc2MzQgNy40MDYyODE4OCwxOS4wMDQwMTg5IEwxOS4yMDg5NDI1LDE3LjgwMzA0OTkgQzIwLjE5OTYzNDUsMTcuNzAyMzg2IDIwLjE5OTYzNDUsMTYuMjk3Mzk3NyAxOS4yMDg5NDI1LDE2LjE5NjczMzggTDcuNDA2MjgxODgsMTQuOTk1NzY0OSBDNi42NDM3ODYxMywxNC45MDg1NTg3IDYuMDQyNjMwMDYsMTQuMzIyMzM5NCA1Ljk1MzY3MjIyLDEzLjU3ODkzMzcgTDUsNS42MTY3OTQ5NyBDNSw0LjQxNjM2NDM1IDYuMjk2Nzk1MzEsMy42MzU4MTUyOCA3LjM5OTA5ODk1LDQuMTcyNTEwMDUiIGlkPSJGaWxsLTEiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=="></span> <!----></span></div></div>
+
+      <!--/input -->
+
+    </div>
+    <script src="https://unpkg.com/blip-chat-widget" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+
+      function sendMsg(input){
+
+	if (!input.value){
+	  return
+	}
+
+	let usermsg = input.value + '<br/>';
+	document.getElementById('msgs').innerHTML += usermsg;
+	input.value = '';
+	bp.widget.sendMessage(usermsg);
+
+      }
+
+      function shouldBlock(msg){
+	let r;
+	if (msg.toLowerCase().includes('escolha')){
+	  r = true;
+	}else{
+	  r = false;
+	}
+	return r;
+      }
+
+      function blockInput(){
+	let txtarea = document.getElementById('msg-textarea');
+	let container = document.getElementById('message-input');
+	let btn = document.getElementById('blip-send-message');
+	btn.style.display = 'none';
+	txtarea.disabled = true;
+	txtarea.style.background = "#ccc";
+	container.style.background = "#ccc";
+      }
+
+      function unblockInput(){
+	let txtarea = document.getElementById('msg-textarea');
+	let container = document.getElementById('message-input');
+	let btn = document.getElementById('blip-send-message');
+	btn.style.display = 'block';
+	txtarea.disabled = false;
+	txtarea.style.background = "#fff";
+	container.style.background = "#fff";
+      }
+
+      function startChat(){
+	let openbtn = document.getElementById('blip-chat-open-iframe');
+	openbtn.style.display = 'none';
+	openbtn.click();
+      }
+
+      function sendOnEnter(){
+	let input = document.getElementById('msg-textarea');
+	input.addEventListener("keypress", function(event) {
+	  if (event.key === "Enter") {
+	    event.preventDefault();
+	    sendMsg(input);
+	  }
+	});
+      }
+
+      function sendOnClick(){
+	let btn = document.getElementById('blip-send-message');
+	btn.onclick = function(e){
+	  let input = document.getElementById('msg-textarea');
+	  sendMsg(input);
+	}
+      }
+
+      function doHack(){
+	startChat();
+	sendOnEnter();
+	sendOnClick();
+      };
+
+      function getAppKey(){
+	let defkey = 'Y2hhdGRpc2FibGVkaW5wdXQ6ZmI4ZjA1ZjMtOGI2YS00M2VlLWFjYzItZDM3OWE3YWEwMGM5';
+	let query = new URLSearchParams(window.location.search);
+	return query.get('appKey') || defkey;
+      }
+
+
+      window.addEventListener('message', function(...args){
+	console.debug(arguments[0]);
+	unblockInput();
+	if (arguments[0].data.code != 'NewBotMessage'){
+	  return;
+	}
+	let msg = arguments[0].data.messageData.message;
+	if (shouldBlock(msg)){
+	  blockInput();
+	}
+      });
+
+      </script>
+    <script>
+      (function () {
+        window.onload = function () {
+	  var customStyle = `#message-input {
+              display:none;
+            }`;
+
+          bp = new BlipChat();
+          bp.withAppKey(getAppKey())
+            .withButton({"color":"#2CC3D5","icon":""})
+	    .withCustomStyle(customStyle)
+	    .withTarget('chat-container')
+            .build();
+	  doHack();
+        }
+    })();
+</script>
+
+  </body>
+</html>

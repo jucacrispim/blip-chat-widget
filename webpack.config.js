@@ -99,7 +99,7 @@ const config = {
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
-    watchContentBase: true
+    watchContentBase: true,
   },
   node: {
     hot: process.env.NODE_ENV === 'production',
@@ -132,6 +132,16 @@ if (process.env.NODE_ENV === 'production') {
     })
   )
   config.plugins.push(
+    new HtmlWebpackPlugin({
+      filename: 'iframe.html',
+      pkg: require('./package.json'),
+      template: './iframe.html',
+      inject: 'body'
+    })
+  )
+
+
+  config.plugins.push(
     new UglifyJsPlugin({
       extractComments: true,
       uglifyOptions: {
@@ -162,6 +172,17 @@ if (process.env.NODE_ENV === 'production') {
       inject: 'body'
     })
   )
+
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      filename: 'iframe.html',
+      pkg: require('./package.json'),
+      template: './iframe.html',
+      inject: 'body'
+    })
+  )
+
+
 }
 
 module.exports = config
