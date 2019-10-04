@@ -70,6 +70,8 @@ function watchDOMChange(){
   let conf = {
     childList: true,
     subtree: true,
+    attributes: true,
+    characterData: true
   };
 
   observer = new MutationObserver(OnDOMChange);
