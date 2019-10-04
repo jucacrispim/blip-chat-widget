@@ -114,7 +114,8 @@ const config = {
       }
     }),
     cssPlugin
-  ]
+  ],
+
 }
 
 if (process.env.NODE_ENV === 'production') {
