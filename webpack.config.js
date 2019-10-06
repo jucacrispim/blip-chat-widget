@@ -110,7 +110,8 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),
+	CHAT_URL: JSON.stringify(process.env.CHAT_URL || 'http://localhost:3000/iframe.html')
       }
     }),
     cssPlugin
@@ -137,6 +138,15 @@ if (process.env.NODE_ENV === 'production') {
       filename: 'iframe.html',
       pkg: require('./package.json'),
       template: './iframe.html',
+      inject: 'body'
+    })
+  )
+
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      filename: 'chat.html',
+      pkg: require('./package.json'),
+      template: './chat.html',
       inject: 'body'
     })
   )
@@ -179,6 +189,15 @@ if (process.env.NODE_ENV === 'production') {
       filename: 'iframe.html',
       pkg: require('./package.json'),
       template: './iframe.html',
+      inject: 'body'
+    })
+  )
+
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      filename: 'chat.html',
+      pkg: require('./package.json'),
+      template: './chat.html',
       inject: 'body'
     })
   )

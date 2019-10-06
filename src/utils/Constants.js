@@ -1,6 +1,7 @@
-const CHAT_URL_LOCAL = 'http://localhost:8082/'
-const CHAT_URL_HMG = 'https://hmg-chat.blip.ai/'
-const CHAT_URL_PROD = 'http://localhost:3000/iframe.html'
+const CHAT_URL = process.env.CHAT_URL
+const CHAT_URL_LOCAL = CHAT_URL
+const CHAT_URL_HMG = CHAT_URL
+const CHAT_URL_PROD = CHAT_URL
 
 const CHAT_READY_CODE = 'RequestCookie'
 const START_CONNECTION_CODE = 'BlipSdkStartConnection'

@@ -1,72 +1,34 @@
-// We only create the observer when the chat is loaded because the container
-// element does not exist before that;
-var observer;
+// The container element for the chat messages. It will be present
+// in the DOM when the chat is  fully loaded.
 var container;
-// container element that we watch for new added nodes
-var selector = '.blip-container';
-// event triggered by each node added to the selector's matching element.
-var node_added_evt = new CustomEvent('node-added', {node: null});
-// triggerd by the last node added. When a bunch of mutations are sent in the
-// same event it is the last added node of the last mutation.
-var last_node_added_evt = new CustomEvent('last-node-added', {node: null});
+var container_selector = '.blip-container';
 
-
-function _getLastAddedNode(mutations){
-  /*
-    Returns the last added node in a list of mutations  that are captured
-    by the mutation observer.
-   */
-  let idx = mutations.length - 1;
-  while (idx >= 0){
-    let mut = mutations[idx];
-    if (mut.addedNodes){
-      return mut.addedNodes[mut.addedNodes.length -1];
-    }
-    idx -= 1;
+window.addEventListener('message', function(message){
+  // when the chat is loaded the parent document sends an UserIrisAccount
+  // message.
+  if (message.data.code != 'UserIrisAccount'){
+    return false;
   }
-  return false;
-}
 
-function _isClosedOptions(node){
-  let sels = [
-    '.blip-container .select',
-    '.slideshow-container'
-  ];
+  container = document.querySelector(container_selector);
+  watchDOMChanges(container);
 
-  let r = false;
-  for (let sel of sels){
-    try{
-      if (node.querySelectorAll(sel).length){
-	r = true;
-	break;
-      }
-    }catch(e){
-      // pass
-    }
-  }
-  return r;
-}
+  // hide the button here 'cause we have a silly bug here. If we
+  // don't hide it now the button will be always visible, not only when
+  // we have some message to send
+  let sendbtn = document.querySelector('#blip-send-message');
+  sendbtn.style.display = 'none';
+  return true;
+});
 
 
-function OnDOMChange(mutations){
-  // Dispatches node-added and last-node-added events;
-  mutations.forEach(function(el){
-    el.addedNodes.forEach(function(node){
-      node_added_evt.node = node;
-      container.dispatchEvent(node_added_evt);
-    });
-  });
-  let last = _getLastAddedNode(mutations);
-  if (last){
-    last_node_added_evt.node = last;
-    container.dispatchEvent(last_node_added_evt);
-  }
-}
-
-function watchDOMChange(){
-  let selector = '.blip-container';
-  let node = document.querySelector(selector);
-  console.debug('Watching DOM changes on ' + selector);
+/**
+ * Watches for changes in a given node or in its child nodes.
+ * When changes are detected the dispatchNodeEvents is called.
+ * @param {Element} node - A DOM element to watch for changes.
+ */
+function watchDOMChanges(node){
+  console.debug('Watching DOM changes on ' + container_selector);
   let conf = {
     childList: true,
     subtree: true,
@@ -74,27 +36,116 @@ function watchDOMChange(){
     characterData: true
   };
 
-  observer = new MutationObserver(OnDOMChange);
+  let observer = new MutationObserver(dispatchNodeEvents);
   observer.observe(node, conf);
-  listenOnContainer();
+  listenOnNode(node);
 }
 
-function listenOnContainer(){
-  container = document.querySelector(selector);
 
-  container.addEventListener('last-node-added', function(e){
-    console.debug(e.node);
-    if (_isClosedOptions(e.node)){
-      console.log('selectable');
+/**
+ * Dispatches `node-added` and `last-node-added` events when new nodes
+ * are added.
+ * @param {array} mutations - A list of mutations in the DOM.
+*/
+function dispatchNodeEvents(mutations){
+  mutations.forEach(function(el){
+    el.addedNodes.forEach(function(node){
+
+      let node_added_evt = new CustomEvent('node-added');
+      node_added_evt.node = node;
+      container.dispatchEvent(node_added_evt);
+    });
+  });
+  let last = _getLastAddedNode(mutations);
+  if (last){
+    let node = last['node'];
+    let mutation = last['mutation'];
+    let last_node_added_evt = new CustomEvent('last-node-added');
+    last_node_added_evt.node = node;
+    container.dispatchEvent(last_node_added_evt);
+  }
+}
+
+/**
+ * Listens to `last-node-added` event in a given node.
+ * @param {Element} node - The node that dispatches the events.
+ */
+function listenOnNode(node){
+  node.addEventListener('last-node-added', function(e){
+    if (hasSelectableOptions(e.node)){
+      disableInput();
+    }else{
+      enableInput();
     }
   });
-
 }
 
-window.addEventListener('message', function(message){
-  if (message.data.code != 'UserIrisAccount'){
-    return false;
+/**
+ * Checks if a node has selectable options on in.
+ * @param {Element} node - A node to check.
+ */
+function hasSelectableOptions(node){
+  let sels = [
+    '.blip-container .select',
+    '.slideshow-container'
+  ];
+  let r = false;
+  for (let sel of sels){
+    if (node.querySelector(sel)){
+      r = true;
+      break;
+    }
   }
-  watchDOMChange();
-  return true;
-});
+  return r;
+}
+
+
+/**
+ * Disables the text input from the user so s/he has to select from
+ * a list of options.
+ */
+function disableInput(){
+  let msgarea = document.querySelector('#message-input');
+  let textarea = document.querySelector('#msg-textarea');
+
+  textarea.disabled = true;
+  let style = 'background-color: #ccc';
+  msgarea.style = style;
+  textarea.style = style;
+  textarea.placeholder = 'Escolha uma opção';
+}
+
+/**
+ * Enables the text input so the user can write free text answers in the chat
+ */
+function enableInput(){
+  let msgarea = document.querySelector('#message-input');
+  let textarea = document.querySelector('#msg-textarea');
+  textarea.disabled = false;
+  let style = 'background-color: #fff';
+  msgarea.style = style;
+  textarea.style = style;
+  textarea.placeholder = 'Digite sua mensagem aqui';
+}
+
+
+function _getLastAddedNode(mutations){
+  // Returns the last added node in a list of mutations  that are captured
+  // by the mutation observer.
+
+  let idx = mutations.length - 1;
+  while (idx >= 0){
+    let mut = mutations[idx];
+    if (mut.addedNodes.length){
+      let node = mut.addedNodes[mut.addedNodes.length -1];
+      // we ignore comment nodes because we only act upon the
+      // message nodes.
+      if (node.nodeName != "#comment"){
+	return {node: node,
+		mutation: mut};
+      }
+    }
+    idx -= 1;
+  }
+  return false;
+}
