@@ -142,14 +142,14 @@ if (process.env.NODE_ENV === 'production') {
     })
   )
 
-  config.plugins.push(
-    new HtmlWebpackPlugin({
-      filename: 'chat.html',
-      pkg: require('./package.json'),
-      template: './chat.html',
-      inject: 'body'
-    })
-  )
+  // config.plugins.push(
+  //   new HtmlWebpackPlugin({
+  //     filename: 'chat.html',
+  //     pkg: require('./package.json'),
+  //     template: './chat.html',
+  //     inject: 'body'
+  //   })
+  // )
 
 
   config.plugins.push(
@@ -193,14 +193,14 @@ if (process.env.NODE_ENV === 'production') {
     })
   )
 
-  config.plugins.push(
-    new HtmlWebpackPlugin({
-      filename: 'chat.html',
-      pkg: require('./package.json'),
-      template: './chat.html',
-      inject: 'body'
-    })
-  )
+  // config.plugins.push(
+  //   new HtmlWebpackPlugin({
+  //     filename: 'chat.html',
+  //     pkg: require('./package.json'),
+  //     template: './chat.html',
+  //     inject: 'body'
+  //   })
+  // )
 
 
 }
