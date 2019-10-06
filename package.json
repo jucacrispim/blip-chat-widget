@@ -24,9 +24,9 @@
   "scripts": {
     "commit": "./node_modules/.bin/git-cz",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:prod": "cp hacks.js dist/ && cross-env NODE_ENV=production ./node_modules/.bin/webpack-dev-server --port 3000 --host 0.0.0.0",
-    "start": "cp hacks.js dist/  && cross-env NODE_ENV=homolog ./node_modules/.bin/webpack-dev-server --port 3000 --host 0.0.0.0",
-    "start:local": "cp hacks.js dist/ && cross-env NODE_ENV=local ./node_modules/.bin/webpack-dev-server --port 3000",
+    "start:prod": "cp hacks.js dist/ && cross-env NODE_ENV=production ./node_modules/.bin/webpack-dev-server --port 3000 --host 0.0.0.0 --disable-host-check",
+    "start": "cp hacks.js dist/  && cross-env NODE_ENV=homolog ./node_modules/.bin/webpack-dev-server --port 3000 --host 0.0.0.0 --disable-host-check",
+    "start:local": "cp hacks.js dist/ && cross-env NODE_ENV=local ./node_modules/.bin/webpack-dev-server --port 3000 --disable-host-check",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hmg": "cross-env NODE_ENV=homolog webpack",
     "semantic-release": "semantic-release",
